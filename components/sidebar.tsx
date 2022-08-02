@@ -17,6 +17,7 @@ import {
     MdPlaylistAdd,
     MdFavorite,
 } from "react-icons/md"
+import { usePlaylist } from "../lib/hooks"
 
 const navMenu = [
     {
@@ -49,9 +50,12 @@ const musicMenu = [
     },
 ]
 
-const playlists = new Array(30).fill(1).map((_,i) => `Playlist ${i+1}`)
+// const playlists = new Array(30).fill(1).map((_,i) => `Playlist ${i+1}`)
 
 const Sidebar = () => {
+
+    const {playlists} = usePlaylist()
+    console.log(playlists)
     return(
         <Box width="100%" height="calc(100vh - 100px)" bg="black" paddingX="5px" color="gray">
             <Box paddingY="20px" height="100%">
@@ -93,12 +97,15 @@ const Sidebar = () => {
                 <Divider color="gray.700"/>
                 <Box height="62%" overflow="auto" paddingY="20px">
                     <List spacing={2}>
-                        {playlists.map(playlist => (
-                            <ListItem paddingX="20px" key={playlist}>
+                        {playlists.map((playlist) => (
+                            <ListItem paddingX="20px" key={playlist.id}>
                                 <LinkBox>
-                                    <NextLink href="/">
-                                        <LinkOverlay>
-                                            {playlist}
+                                    <NextLink href={{
+                                        pathname: "/playlist/[id]",
+                                        query: {id: playlist.id},
+                                    }}>
+                                        <LinkOverlay cursor="pointer">
+                                            {playlist.name}
                                         </LinkOverlay>
                                     </NextLink>
                                 </LinkBox>
